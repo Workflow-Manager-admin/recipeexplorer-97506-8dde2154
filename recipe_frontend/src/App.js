@@ -2,21 +2,54 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 /**
- * ThemeToggle toggles light/dark skeuomorphic theme.
- * @param {object} props
- * @param {string} props.theme - current theme
- * @param {function} props.toggleTheme - fn to change theme
+ * ThemeToggle: Visually rich skeuomorphic theme switch (accessible).
+ * Shows a faux-material toggle resembling a sliding sun/moon nubbin with tactile feedback.
  */
+// PUBLIC_INTERFACE
 function ThemeToggle({ theme, toggleTheme }) {
+  // Simple SVGs for "Sun" and "Moon" icons
+  const sunIcon =
+    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false" style={{display:'block'}}><circle cx="11" cy="11" r="5.5" fill="#ffe066" stroke="#bc9800" strokeWidth="1.5"/><g stroke="#bc9800" strokeWidth="1.2"><line x1="11" y1="1.5" x2="11" y2="4"/><line x1="11" y1="18" x2="11" y2="20.5"/><line x1="4" y1="11" x2="1.5" y2="11"/><line x1="18" y1="11" x2="20.5" y2="11"/><line x1="5.17" y1="5.17" x2="3.46" y2="3.46"/><line x1="16.83" y1="5.17" x2="18.54" y2="3.46"/><line x1="5.17" y1="16.83" x2="3.46" y2="18.54"/><line x1="16.83" y1="16.83" x2="18.54" y2="18.54"/></g></svg>;
+  const moonIcon =
+    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false" style={{display:'block'}}><path d="M18 14.7A7.02 7.02 0 0 1 7.3 4a6 6 0 1 0 10.7 10.7Z" fill="#ffeab6" stroke="#aa821f" strokeWidth="1.32"/></svg>;
+
+  // Skeuomorphic switch: big, tactile, faux-shadow, sliding thumb
   return (
     <button
-      className="theme-toggle"
+      className="skeuo-theme-toggle"
+      aria-pressed={theme === 'dark'}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-      onClick={toggleTheme}
-      title="Toggle theme"
+      title="Toggle light/dark mode"
       type="button"
+      onClick={toggleTheme}
+      tabIndex={0}
+      style={{
+        minWidth:48, height:38, display:'inline-flex', alignItems:'center', gap:10,
+        border:'none', background:'none', padding:0, margin:0, cursor:'pointer'
+      }}
     >
-      {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+      <span className="skeuo-toggle-track" data-theme={theme}>
+        <span className="skeuo-toggle-thumb" data-theme={theme} style={{
+          left: theme === 'dark' ? 'calc(55% - 4px)' : '4px',
+          boxShadow: theme === 'dark'
+            ? '0 4px 14px #14121855, 0 0.5px 2px #ffeab630 inset'
+            : '0 4.5px 14px #e1bd5855, 0 0.5px 2.2px #fffefd50 inset',
+          background: theme === 'dark'
+            ? 'linear-gradient(140deg,#291d10 95%,#564119 130%)'
+            : 'linear-gradient(120deg,#fff9c6 65%,#ffeab6 120%)'
+        }}>
+          {theme === 'dark' ? moonIcon : sunIcon}
+        </span>
+        {/* track sun/moon shadows */}
+        <span className="skeuo-toggle-icon skeuo-toggle-sun" aria-hidden="true">{sunIcon}</span>
+        <span className="skeuo-toggle-icon skeuo-toggle-moon" aria-hidden="true">{moonIcon}</span>
+      </span>
+      <span className="skeuo-toggle-label" style={{
+        fontWeight: 600, fontSize:'1.01rem', color:'#b5872f', fontFamily:'Segoe UI,Comic Sans MS,cursive',
+        letterSpacing:'.07em', textShadow:'0 2px 6px #fff9c644'
+      }}>
+        {theme === 'dark' ? 'Dark' : 'Light'}
+      </span>
     </button>
   );
 }
@@ -167,8 +200,14 @@ function NotesApp({ theme, toggleTheme }) {
     <main className="skeuo-notes-wrapper">
       <header className="skeuo-header">
         <h1 className="skeuo-title">📝 My Notes</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          minWidth: 'fit-content'
+        }}>
           <button className="skeuo-btn add-note-btn" onClick={handleAddClick}>+ Add Note</button>
+          {/* The new switch sits flush inline, matching tactile style */}
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </div>
       </header>

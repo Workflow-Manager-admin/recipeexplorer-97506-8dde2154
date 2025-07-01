@@ -349,30 +349,116 @@ body, .App {
   transition: color 0.3s ease;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
+/* SKEUOMORPHIC THEME SWITCH (tactile faux switch – accessible) */
+.skeuo-theme-toggle {
+  /* Placement: inline in header, so no absolute/floating position */
+  display: flex;
+  align-items: center;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
+  background: none;
+  padding: 0 3px 0 2px;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  outline: none;
+  box-shadow: none;
+  transition: box-shadow 0.17s;
+  position: relative;
+  min-width: 74px;
+}
+.skeuo-theme-toggle:focus-visible {
+  outline: 2.2px solid #ffc251;
+  z-index: 2;
+}
+.skeuo-theme-toggle:active {
+  /* subtle press in */
+  filter: brightness(0.98) grayscale(5%);
+  box-shadow: 0 2.5px 14px #ddca8840;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.skeuo-toggle-track {
+  display: inline-block;
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background: linear-gradient(140deg,#fbecb7 60%,#e6d09a 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px #ae983f26, 0 1px 5.5px #ffe69760 inset;
+  padding: 1.5px;
+  margin-right: 9px;
+  transition: background 0.25s;
+}
+[data-theme="dark"] .skeuo-toggle-track,
+.skeuo-toggle-track[data-theme="dark"] {
+  background: linear-gradient(145deg,#20180d 60%,#463313 103%);
+  box-shadow: 0 4px 13px #13110877, 0 1px 4px #fbe19118 inset;
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
+.skeuo-toggle-thumb {
+  position: absolute;
+  top: 2.8px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(120deg, #fff9c6 65%, #ffeab6 120%);
+  box-shadow: 0 4.5px 14px #e1bd5862, 0 0.5px 2.2px #fffefd60 inset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.18em;
+  transition: left 0.23s cubic-bezier(.6,-0.12,.6,1.13), background 0.23s, box-shadow 0.22s;
+  z-index: 2;
+}
+[data-theme="dark"] .skeuo-toggle-thumb,
+.skeuo-toggle-thumb[data-theme="dark"] {
+  background: linear-gradient(140deg,#291d10 95%,#564119 130%);
+  box-shadow: 0 4px 14px #14121877, 0 0.5px 2px #ffeab640 inset;
+}
+.skeuo-toggle-thumb svg {
+  width: 17px !important; height: 17px !important; pointer-events: none;
+}
+
+.skeuo-toggle-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.52;
+  transition: filter 0.22s, opacity 0.19s;
+  z-index: 1;
+  pointer-events: none;
+}
+.skeuo-toggle-sun {
+  left: 2.5px;
+  filter: brightness(1.1) drop-shadow(0 0.5px 2.2px #ffe58733);
+}
+.skeuo-toggle-moon {
+  right: 2.5px;
+  filter: brightness(0.84) drop-shadow(0 0.5px 2px #9e833222);
+}
+[data-theme="dark"] .skeuo-toggle-sun,
+.skeuo-toggle-sun[data-theme="dark"] {
+  filter: grayscale(0.28) brightness(0.68) drop-shadow(0 0.5px 2.2px #ffe58730);
+}
+[data-theme="dark"] .skeuo-toggle-moon,
+.skeuo-toggle-moon[data-theme="dark"] {
+  filter: brightness(1.17) drop-shadow(0 0.5px 3.5px #ffebb890);
+}
+
+.skeuo-toggle-label {
+  user-select: none;
+  margin-left: 2px;
+  min-width: 28px;
+  display:inline-block;
+  transition: color 0.18s;
+}
+[data-theme="dark"] .skeuo-toggle-label {
+  color: #ffecb6 !important;
+  text-shadow: 0 4px 14px #2018041a;
+}
+
+/* Remove old .theme-toggle button styles (hidden to ensure no overlap) */
+.theme-toggle {
+  display: none !important;
 }
 
 @keyframes App-logo-spin {
