@@ -23,20 +23,28 @@
 
 /* Skeuomorphic Notes App Styles */
 body, .App {
-  background: repeating-linear-gradient(
-      135deg,
-      #f9f6f1,
-      #f9f6f1 100px,
-      #efe8dc 120px,
-      #f9f6f1 180px
+  /* 
+    Lighter, more realistic "paper" background for skeuomorphic light mode.
+    Uses a very light neutral "off-white" tone, soft gradient hints of paper shadows,
+    and a more tactile subtle paper-fiber pattern overlay.
+  */
+  background: 
+    linear-gradient(118deg, #fdfcf7 80%, #f4eeea 99%),
+    repeating-linear-gradient(
+      90deg, 
+      rgba(249,245,228,0.65) 0, 
+      rgba(255,255,255,0.65) 24px,
+      rgba(251,248,232,0.72) 26px, 
+      rgba(255,255,255,0.67) 52px
     ),
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR4AWP8//8/AwyhPxbUAgBgGAVGzUQwkQAAAABJRU5ErkJggg==') repeat;
-  background-blend-mode: multiply;
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABKklEQVRoQ+3XvQ0BQRTG8V8IZOKEqA4o4IlQbWgnIG0ege8QZ+i9MCR8QWjIJOcwfOJU5jc3N9IzbdvGbbGZa3mI2ze9bRflrF78SB5rHnpCce0f8tGNvUDEu7wNyUAyQ0w1MtqLXQaRNMT4hAiJmCkIyz8CKZoCHz2Y4ICoR0CMSnyYv5iZ/9zwwGnZYCNWbUdNozDQh4fDJOKOQ1KqqKRU/BtzfKIyk4JrIWQlpgpDKi6dbpONAZA+HmR5R88f1KXA2MnsyjBntdojte28c4/8JG8UClE4Go5wkZy/H0qxZl6CRgAAAABJRU5ErkJggg==') repeat;
+  background-blend-mode: lighten, multiply;
   min-height: 100vh;
   font-family: 'Segoe UI', ui-sans-serif, system-ui, "Comic Sans MS", cursive;
   color: var(--text-primary);
   transition: background 0.3s, color 0.3s;
 }
+
 [data-theme="dark"] body, [data-theme="dark"] .App {
   background: repeating-linear-gradient(
       135deg,
