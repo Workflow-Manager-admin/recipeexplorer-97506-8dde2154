@@ -2,6 +2,26 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 /**
+ * ThemeToggle toggles light/dark skeuomorphic theme.
+ * @param {object} props
+ * @param {string} props.theme - current theme
+ * @param {function} props.toggleTheme - fn to change theme
+ */
+function ThemeToggle({ theme, toggleTheme }) {
+  return (
+    <button
+      className="theme-toggle"
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+      onClick={toggleTheme}
+      title="Toggle theme"
+      type="button"
+    >
+      {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+    </button>
+  );
+}
+
+/**
  * NoteCard component for displaying individual notes with skeuomorphic design.
  * @param {object} props
  * @param {object} props.note
@@ -82,9 +102,12 @@ function NoteForm({ initial, onSubmit, onCancel }) {
 
 /**
  * NotesApp is the main notes UI: list, add, edit, delete.
+ * @param {object} props
+ * @param {string} props.theme - current theme
+ * @param {function} props.toggleTheme - fn to change theme
  */
 // PUBLIC_INTERFACE
-function NotesApp() {
+function NotesApp({ theme, toggleTheme }) {
   // Array of {id, title, content}
   const [notes, setNotes] = useState(() => {
     try {
@@ -144,7 +167,10 @@ function NotesApp() {
     <main className="skeuo-notes-wrapper">
       <header className="skeuo-header">
         <h1 className="skeuo-title">📝 My Notes</h1>
-        <button className="skeuo-btn add-note-btn" onClick={handleAddClick}>+ Add Note</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button className="skeuo-btn add-note-btn" onClick={handleAddClick}>+ Add Note</button>
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+        </div>
       </header>
       {showForm && (
         <NoteForm
@@ -176,11 +202,38 @@ function NotesApp() {
 }
 
 /**
- * The entry point for the Notes App with skeuomorphic UI.
+ * The entry point for the Notes App with skeuomorphic UI and theme toggle.
  */
 // PUBLIC_INTERFACE
 function App() {
-  return <NotesApp />;
+  const [theme, setTheme] = useState(() => {
+    // Prefer localStorage, then prefers-color-scheme, then light
+    if (typeof window !== 'undefined') {
+      const local = localStorage.getItem('theme');
+      if (local && (local === 'light' || local === 'dark')) return local;
+      // auto-detect
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    }
+    return 'light';
+  });
+
+  // Apply theme to document root
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
+
+  // PUBLIC_INTERFACE
+  function toggleTheme() {
+    setTheme(theme => theme === 'light' ? 'dark' : 'light');
+  }
+
+  return <NotesApp theme={theme} toggleTheme={toggleTheme} />;
 }
 
 export default App;

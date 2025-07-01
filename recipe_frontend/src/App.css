@@ -14,11 +14,11 @@
   /* Dark theme colors */
   --bg-primary: #1a1a1a;
   --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
+  --text-primary: #faf8ee;
+  --text-secondary: #ffe18d;
   --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+  --button-bg: #161d26;
+  --button-text: #f4cb81;
 }
 
 /* Skeuomorphic Notes App Styles */
@@ -35,6 +35,20 @@ body, .App {
   min-height: 100vh;
   font-family: 'Segoe UI', ui-sans-serif, system-ui, "Comic Sans MS", cursive;
   color: var(--text-primary);
+  transition: background 0.3s, color 0.3s;
+}
+[data-theme="dark"] body, [data-theme="dark"] .App {
+  background: repeating-linear-gradient(
+      135deg,
+      #23221e,
+      #23221e 100px,
+      #28251e 140px,
+      #23221e 180px
+    ),
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR4AWP8//8/AwyhPxbUAgBgGAVGzUQwkQAAAABJRU5ErkJggg==') repeat;
+  background-blend-mode: multiply;
+  color: var(--text-primary);
+  transition: background 0.3s, color 0.3s;
 }
 
 .skeuo-notes-wrapper {
@@ -187,6 +201,42 @@ body, .App {
   box-shadow: 0 16px 46px #c7b89714, 0 2px 10px #dfd1a634;
   border-radius: 14px;
   border: 1.4px solid #ede3bb;
+  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+}
+[data-theme="dark"] .paper, [data-theme="dark"] .note-card, [data-theme="dark"] .empty-state.paper {
+  background: linear-gradient(125deg, #22201b 80%, #332710 100%);
+  box-shadow: 0 16px 38px #13121336, 0 2px 10px #26241d66 inset;
+  border-radius: 16px;
+  border: 1.4px solid #463b22;
+}
+[data-theme="dark"] .skeuo-header {
+  background: linear-gradient(120deg, #211e13 82%, #353029 100%);
+  box-shadow: 0 2px 20px #18151142, 0 12px 30px #302a1738;
+  border: 1.5px solid #3d351c;
+}
+[data-theme="dark"] .skeuo-btn,
+[data-theme="dark"] .note-btn,
+[data-theme="dark"] .skeuo-btn.add-note-btn {
+  background: linear-gradient(135deg,#363017 80%,#423a22 110%);
+  color: #f6e0a6;
+  box-shadow: 0 3px 12px #06060537, 0 1px 2px #66542432;
+  border: none;
+}
+[data-theme="dark"] .skeuo-btn.secondary,
+[data-theme="dark"] .note-btn.edit {
+  background: linear-gradient(155deg, #282414 70%, #211e13 100%);
+  color: #ffe39b;
+}
+[data-theme="dark"] .skeuo-btn.add-note-btn {
+  background: linear-gradient(135deg, #705200 60%, #b78416 110%);
+  color: #fffdde;
+}
+[data-theme="dark"] .note-btn.delete {
+  background: linear-gradient(130deg,#8b2323 70%,#bd5d12 110%);
+  color: #fff6e7;
+}
+[data-theme="dark"] .skeuo-btn:active, [data-theme="dark"] .note-btn:active {
+  filter: brightness(1.02) saturate(1.2);
 }
 
 .note-form.paper, .empty-state.paper {
@@ -224,8 +274,17 @@ body, .App {
     0 1.5px 7px #e8d0a448;
   padding: 8px 13px;
   outline: none;
-  transition: border 0.16s, box-shadow 0.16s;
+  transition: border 0.16s, box-shadow 0.16s, background 0.3s, color 0.3s;
   color: #604b23;
+}
+[data-theme="dark"] .skeuo-input,
+[data-theme="dark"] .skeuo-textarea {
+  background: repeating-linear-gradient(0deg, #221f19 0px, #2a251b 11px, #29251c 23px);
+  border: 1.7px solid #3a2d18;
+  color: #ffe3ac;
+  box-shadow:
+    0 0.7px 2.5px #23221560 inset,
+    0 1.5px 7px #432f1a40;
 }
 .skeuo-input:focus, .skeuo-textarea:focus {
   border-color: #dabf6d;
